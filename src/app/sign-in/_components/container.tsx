@@ -1,7 +1,16 @@
+"use client";
+
 import { EyeIcon } from "lucide-react";
+import { useRouter } from "next/router";
 import React from "react";
 
 export default function Container() {
+  const router = useRouter();
+
+  const handleSubmit = () => {
+    router.push("/");
+  };
+
   return (
     <section className="h-screen w-full bg-[#0D6BDC]">
       <div className="flex h-full flex-col justify-end">
@@ -43,7 +52,10 @@ export default function Container() {
                 </div>
               </div>
               <div className="mt-4">
-                <button className="w-full rounded-full bg-[#0D6BDC] px-8 py-4">
+                <button
+                  className="w-full rounded-full bg-[#0D6BDC] px-8 py-4"
+                  onClick={handleSubmit}
+                >
                   <p className="text-base font-semibold text-white">Login</p>
                 </button>
               </div>
