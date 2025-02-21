@@ -19,7 +19,7 @@ export default function Nav() {
   return (
     <>
       <div className="fixed bottom-0 left-0 w-full">
-        <div className="w-full bg-white p-4">
+        <div className="w-full bg-white p-4 shadow-[0_-2px_16px_0px_rgba(0,0,0,0.1)]">
           <div className="flex items-center justify-between">
             <Link href="/">
               <div className="flex flex-col items-center gap-1">
@@ -59,7 +59,7 @@ export default function Nav() {
             </Link>
             <div className="-mx-4 -mt-16">
               <button
-                className="h-16 w-16 rounded-full bg-[#4499FF]"
+                className="h-16 w-16 rounded-full bg-[#4499FF] shadow"
                 onClick={() => setIsOpenAssistant(true)}
               >
                 <div className="flex items-center justify-center">
@@ -68,7 +68,7 @@ export default function Nav() {
                     alt=""
                     width={240}
                     height={240}
-                    className="h-8 w-8"
+                    className="h-6 w-6"
                   />
                 </div>
               </button>
