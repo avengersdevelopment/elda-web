@@ -1,6 +1,11 @@
 "use client";
 
-import { ContactRoundIcon, HandHeartIcon, HomeIcon } from "lucide-react";
+import {
+  CircleUserIcon,
+  ContactRoundIcon,
+  HandHeartIcon,
+  HomeIcon,
+} from "lucide-react";
 import Image from "next/image";
 import Link from "next/link";
 import { useState } from "react";
@@ -93,7 +98,7 @@ export default function Nav() {
             </Link>
             <Link href="/profile">
               <div className="flex flex-col items-center gap-1">
-                <HomeIcon
+                <CircleUserIcon
                   className={cn(
                     "h-5 w-5 text-[#919191]",
                     isNavActive("/profile") && "text-[#0D6BDC]",

@@ -28,7 +28,7 @@ export default function AssistModal({ isOpen, onClose }: AssistModalProps) {
       animate={{ y: isOpen ? "5%" : "100%" }}
       transition={{ ease: "backInOut", duration: 0.5 }}
       className={cn(
-        "fixed left-0 top-0 h-screen w-full rounded-t-3xl bg-white",
+        "fixed left-0 top-0 h-screen w-full rounded-t-3xl bg-white shadow-[0_-2px_16px_0px_rgba(0,0,0,0.1)]",
       )}
     >
       <div className="relative h-full w-full">

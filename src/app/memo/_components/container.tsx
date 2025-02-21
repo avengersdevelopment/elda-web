@@ -1,6 +1,6 @@
 "use client";
 
-import { EllipsisIcon, PlusIcon, TimerIcon } from "lucide-react";
+import { PlusIcon } from "lucide-react";
 import Link from "next/link";
 
 export default function Container() {
