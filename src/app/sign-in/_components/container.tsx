@@ -15,7 +15,7 @@ export default function Container() {
   };
 
   return (
-    <section className="h-screen w-full bg-[#0D6BDC]">
+    <section className="h-screen w-full bg-[#0D6BDC] pt-12">
       <div className="flex h-full flex-col justify-end">
         <div>
           <div className="mb-4 p-4">
@@ -24,7 +24,7 @@ export default function Container() {
               Welcome back, log into your account!
             </p>
           </div>
-          <div className="rounded-t-3xl bg-white px-4 pb-16 pt-8">
+          <div className="rounded-t-3xl bg-white px-4 pb-8 pt-8">
             <div className="flex flex-col gap-4">
               <div className="flex flex-col gap-2">
                 <label className="text-sm font-semibold text-[#1C1B55]">
@@ -32,7 +32,7 @@ export default function Container() {
                 </label>
                 <input
                   type="text"
-                  className="w-full rounded-md border border-gray-300 p-2 focus:outline-none focus:ring-2 focus:ring-[#0D6BDC]"
+                  className="w-full rounded-md border border-gray-300 px-4 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-[#0D6BDC]"
                 />
               </div>
               <div className="flex flex-col gap-2">
@@ -47,7 +47,7 @@ export default function Container() {
                 <div className="relative">
                   <input
                     type={isShowPassword ? "text" : "password"}
-                    className="w-full rounded-md border border-gray-300 p-2 focus:outline-none focus:ring-2 focus:ring-[#0D6BDC]"
+                    className="w-full rounded-md border border-gray-300 bg-[#F7F7F7] px-4 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-[#0D6BDC]"
                   />
                   <div className="absolute right-4 top-1/2 -translate-y-1/2">
                     <button onClick={() => setIsShowPassword(!isShowPassword)}>
