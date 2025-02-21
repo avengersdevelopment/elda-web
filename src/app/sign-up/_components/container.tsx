@@ -1,9 +1,9 @@
 "use client";
 
 import { EyeIcon, EyeOffIcon } from "lucide-react";
+import Link from "next/link";
 import { useRouter } from "next/navigation";
 import React, { useState } from "react";
-import Link from "next/link";
 
 export default function Container() {
   const router = useRouter();
@@ -19,13 +19,22 @@ export default function Container() {
       <div className="flex h-full flex-col justify-end">
         <div>
           <div className="mb-4 p-4">
-            <h2 className="mb-2 text-3xl font-bold text-white">Log In</h2>
+            <h2 className="mb-2 text-3xl font-bold text-white">Register</h2>
             <p className="text-base text-white">
-              Welcome back, log into your account!
+              Create an account to get started
             </p>
           </div>
           <div className="rounded-t-3xl bg-white px-4 pb-16 pt-8">
             <div className="flex flex-col gap-4">
+              <div className="flex flex-col gap-2">
+                <label className="text-sm font-semibold text-[#1C1B55]">
+                  Full Name
+                </label>
+                <input
+                  type="text"
+                  className="w-full rounded-md border border-gray-300 p-2 focus:outline-none focus:ring-2 focus:ring-[#0D6BDC]"
+                />
+              </div>
               <div className="flex flex-col gap-2">
                 <label className="text-sm font-semibold text-[#1C1B55]">
                   Email
@@ -40,9 +49,6 @@ export default function Container() {
                   <label className="text-sm font-semibold text-[#1C1B55]">
                     Password
                   </label>
-                  <button className="text-sm font-medium text-[#9797C9]">
-                    Forgot Password?
-                  </button>
                 </div>
                 <div className="relative">
                   <input
@@ -65,16 +71,16 @@ export default function Container() {
                   className="w-full rounded-full bg-[#0D6BDC] px-8 py-4"
                   onClick={handleSubmit}
                 >
-                  <p className="text-base font-semibold text-white">Login</p>
+                  <p className="text-base font-semibold text-white">Register</p>
                 </button>
               </div>
               <div className="flex items-center justify-center gap-2">
                 <p className="text-sm text-[#9797C9]">
-                  Don&apos;t have an account?
+                  Already have an account?
                 </p>
-                <Link href="/sign-up">
+                <Link href="/sign-in">
                   <button className="text-sm font-medium text-[#1C1B55] underline">
-                    Register
+                    Login
                   </button>
                 </Link>
               </div>
