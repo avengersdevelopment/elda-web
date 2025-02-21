@@ -24,6 +24,7 @@ export default function AssistModal({ isOpen, onClose }: AssistModalProps) {
 
   return (
     <motion.div
+      initial={{ y: "100%" }}
       animate={{ y: isOpen ? "5%" : "100%" }}
       transition={{ ease: "backInOut", duration: 0.5 }}
       className={cn(
