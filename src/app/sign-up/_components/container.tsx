@@ -1,6 +1,7 @@
 "use client";
 
 import { EyeIcon, EyeOffIcon } from "lucide-react";
+import Image from "next/image";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
 import React, { useState } from "react";
@@ -18,11 +19,24 @@ export default function Container() {
     <section className="h-screen w-full bg-[#0D6BDC] pt-12">
       <div className="flex h-full flex-col justify-end">
         <div>
-          <div className="mb-4 p-4">
-            <h2 className="mb-2 text-3xl font-bold text-white">Register</h2>
-            <p className="text-base text-white">
-              Create an account to get started
-            </p>
+          <div className="relative mb-4 p-4">
+            <div className="relative z-20">
+              <h2 className="mb-2 text-3xl font-bold text-white">Register</h2>
+              <p className="text-base text-white">
+                Create an account to get started
+              </p>
+            </div>
+            <div className="absolute -bottom-4 right-0 z-10">
+              <div>
+                <Image
+                  src="/assets/auth/bg.png"
+                  alt="logo"
+                  width={480}
+                  height={480}
+                  className="h-auto w-[240px]"
+                />
+              </div>
+            </div>
           </div>
           <div className="rounded-t-3xl bg-white px-4 pb-8 pt-8">
             <div className="flex flex-col gap-4">
