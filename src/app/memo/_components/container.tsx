@@ -58,7 +58,7 @@ export default function Container() {
               </div>
               {memos?.map((item, index) => {
                 return (
-                  <div className="rounded-2xl bg-white p-4" key={index}>
+                  <div className="mb-2 rounded-2xl bg-white p-4" key={index}>
                     <p className="mb-2 text-base font-normal text-black">
                       {item.text}
                     </p>
