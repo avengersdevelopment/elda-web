@@ -1,5 +1,6 @@
 "use client";
 
+import { cn } from "@/utils/classnames";
 import {
   CircleUserIcon,
   ContactRoundIcon,
@@ -8,14 +9,10 @@ import {
 } from "lucide-react";
 import Image from "next/image";
 import Link from "next/link";
-import { useState } from "react";
-import AssistModal from "./assist-modal";
 import { usePathname } from "next/navigation";
-import { cn } from "@/utils/classnames";
+
 export default function Nav() {
   const pathname = usePathname();
-
-  const [isOpenAssistant, setIsOpenAssistant] = useState<boolean>(false);
 
   const isNavActive = (path: string) => {
     return pathname === path;
@@ -63,20 +60,19 @@ export default function Nav() {
               </div>
             </Link>
             <div className="-mx-4 -mt-16">
-              <button
-                className="h-16 w-16 rounded-full bg-[#4499FF] shadow"
-                onClick={() => setIsOpenAssistant(true)}
-              >
-                <div className="flex items-center justify-center">
-                  <Image
-                    src="/assets/home/assist-icon.svg"
-                    alt=""
-                    width={240}
-                    height={240}
-                    className="h-6 w-6"
-                  />
-                </div>
-              </button>
+              <Link href="/chatbot">
+                <button className="h-16 w-16 rounded-full bg-[#4499FF] shadow">
+                  <div className="flex items-center justify-center">
+                    <Image
+                      src="/assets/home/assist-icon.svg"
+                      alt=""
+                      width={240}
+                      height={240}
+                      className="h-6 w-6"
+                    />
+                  </div>
+                </button>
+              </Link>
             </div>
             <Link href="/guide">
               <div className="flex flex-col items-center gap-1">
@@ -117,11 +113,6 @@ export default function Nav() {
           </div>
         </div>
       </div>
-
-      <AssistModal
-        isOpen={isOpenAssistant}
-        onClose={() => setIsOpenAssistant(false)}
-      />
     </>
   );
 }

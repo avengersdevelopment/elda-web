@@ -16,6 +16,7 @@ export default function Container() {
 
   const { setConfig } = useConfig()();
 
+  const [isLoading, setIsLoading] = useState<boolean>(false);
   const [isShowPassword, setIsShowPassword] = useState<boolean>(false);
 
   const handleSubmit = () => {
@@ -23,6 +24,8 @@ export default function Container() {
       toast.error("Please fill in all fields");
       return;
     }
+
+    setIsLoading(true);
 
     api
       .post("/auth/login", {
@@ -39,6 +42,9 @@ export default function Container() {
       })
       .catch(() => {
         toast.error("Invalid email or password");
+      })
+      .finally(() => {
+        setIsLoading(false);
       });
   };
 
@@ -103,6 +109,7 @@ export default function Container() {
               <div className="mt-4">
                 <button
                   className="w-full rounded-full bg-[#0D6BDC] px-8 py-4"
+                  disabled={isLoading}
                   onClick={handleSubmit}
                 >
                   <p className="text-base font-semibold text-white">Login</p>

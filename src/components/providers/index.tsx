@@ -18,7 +18,8 @@ export default function Providers({ children }: ProvidersProps) {
   const isHome =
     pathname !== "/sign-in" &&
     pathname !== "/sign-up" &&
-    pathname !== "/onboard";
+    pathname !== "/onboard" &&
+    pathname !== "/chatbot";
 
   return (
     <ConfigProvider config={user}>

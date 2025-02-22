@@ -23,6 +23,7 @@ body {
 @layer components {
   * {
     @apply scroll-smooth;
+    @apply transition-all duration-300;
   }
 
   :disabled {

@@ -20,7 +20,7 @@ export default function Container() {
     const googleMapsUrl = `https://www.google.com/maps?q=${config?.latitude},${config?.longitude}`;
 
     navigator.clipboard.writeText(googleMapsUrl);
-    toast.success("Location shared successfully");
+    toast.success("Location copied to clipboard");
   };
 
   const handleLogout = () => {

@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/ban-ts-comment */
 "use client";
 
 import api from "@/service/api";
@@ -8,6 +9,7 @@ import { useEffect, useRef, useState } from "react";
 import { useForm } from "react-hook-form";
 import { toast } from "sonner";
 import { IQuestion, ONBOARD_QUESTIONS } from "../_consts";
+import { useSpeechRecognition } from "react-speech-kit";
 
 interface IMessage {
   id: number;
@@ -28,6 +30,13 @@ export default function Container() {
     null,
   );
   const [messages, setMessages] = useState<IMessage[]>([]);
+
+  const { listen, listening, stop } = useSpeechRecognition({
+    onResult: (result) => {
+      // @ts-ignore
+      form.setValue("message", result);
+    },
+  });
 
   const handleRegister = () => {
     const userRegister = JSON.parse(
@@ -143,7 +152,15 @@ export default function Container() {
           ></div>
         </div>
         <div className="mt-8 flex items-center justify-center">
-          <div className="h-32 w-32 rounded-full border-2 border-[#0D6BDC] bg-white"></div>
+          <div className="h-32 w-32 rounded-full border-2 border-[#0D6BDC] bg-white">
+            <video
+              src="/assets/onboard/elda-moving.mp4"
+              autoPlay
+              muted
+              loop
+              className="h-full w-full rounded-full object-cover"
+            />
+          </div>
         </div>
         <div
           className="mt-12 h-[380px] w-full overflow-hidden"
@@ -232,6 +249,18 @@ export default function Container() {
             />
             <button
               disabled={isLoading || currentQuestion?.isOption}
+              onMouseDown={() => {
+                if (form.watch("message")?.length) {
+                  return;
+                }
+
+                listen({ lang: "en-US" });
+              }}
+              onMouseUp={() => {
+                if (listening) {
+                  stop();
+                }
+              }}
               onClick={() => {
                 if (!form.watch("message")?.length) {
                   return;
