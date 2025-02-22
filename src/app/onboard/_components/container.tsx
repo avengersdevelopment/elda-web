@@ -25,7 +25,11 @@ export default function Container() {
   const listRef = useRef<HTMLDivElement>(null);
 
   const [isLoading, setIsLoading] = useState<boolean>(false);
-  const [progress, setProgress] = useState<number>(0);
+  const [progress, setProgress] = useState<number>(1);
+  const [location, setLocation] = useState<{
+    lat: number | null;
+    lon: number | null;
+  }>({ lat: null, lon: null });
   const [currentQuestion, setCurrentQuestion] = useState<IQuestion | null>(
     null,
   );
@@ -62,8 +66,8 @@ export default function Container() {
       emergency: emergency?.message,
       habits: habits?.message,
       important_notes: important_notes?.message,
-      latitude: 1,
-      longitude: 1,
+      latitude: location?.lat,
+      longitude: location?.lon,
     };
 
     if (userRegister) {
@@ -105,7 +109,7 @@ export default function Container() {
     form.setValue("message", "");
 
     setTimeout(() => {
-      if (progress === ONBOARD_QUESTIONS?.length - 1) {
+      if (progress === ONBOARD_QUESTIONS?.length) {
         return;
       }
 
@@ -115,7 +119,7 @@ export default function Container() {
   };
 
   useEffect(() => {
-    const question = ONBOARD_QUESTIONS?.[progress];
+    const question = ONBOARD_QUESTIONS?.[progress - 1];
 
     setCurrentQuestion(question);
     setMessages([
@@ -139,6 +143,17 @@ export default function Container() {
     }
   }, [messages]);
 
+  useEffect(() => {
+    if (navigator.geolocation) {
+      navigator.geolocation.getCurrentPosition((position) => {
+        setLocation({
+          lat: position.coords.latitude,
+          lon: position.coords.longitude,
+        });
+      });
+    }
+  }, []);
+
   return (
     <section className="h-screen w-full bg-white pt-12">
       <div className="px-4 pb-8">
@@ -147,7 +162,7 @@ export default function Container() {
           <div
             className="-mt-2 h-2 w-1/3 rounded-full bg-[#0D6BDC]"
             style={{
-              width: `${(progress / ONBOARD_QUESTIONS?.length - 1) * 100}%`,
+              width: `${(progress / ONBOARD_QUESTIONS?.length) * 100}%`,
             }}
           ></div>
         </div>
