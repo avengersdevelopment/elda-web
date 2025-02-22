@@ -30,8 +30,7 @@ export default function RootLayout({
       >
         <div className="mx-auto max-w-sm">
           <Providers>
-            {/* <Loading>{children}</Loading> */}
-            {children}
+            <Loading>{children}</Loading>
           </Providers>
         </div>
       </body>

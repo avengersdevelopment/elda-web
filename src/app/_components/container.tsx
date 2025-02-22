@@ -7,6 +7,14 @@ import { EllipsisIcon, TimerIcon } from "lucide-react";
 import Link from "next/link";
 import { useEffect, useState } from "react";
 
+interface IReminder {
+  id: string;
+  created_at: string;
+  userid: string;
+  reminder_time: string;
+  title: string;
+}
+
 interface ISchedule {
   id: string;
   created_at: string;
@@ -25,7 +33,7 @@ export default function Container() {
   const [currentDate, setCurrentDate] = useState<string>("");
 
   const [isLoadingSchedules, setIsLoadingSchedules] = useState<boolean>(false);
-  const [reminders, setReminders] = useState<ISchedule[]>([]);
+  const [reminders, setReminders] = useState<IReminder[]>([]);
   const [schedules, setSchedules] = useState<ISchedule[]>([]);
 
   const handleGetSchedules = () => {
@@ -101,7 +109,7 @@ export default function Container() {
             </div>
             {reminders?.map((item, index) => {
               return (
-                <div className="rounded-2xl bg-[#147FFF] p-4" key={index}>
+                <div className="mb-2 rounded-2xl bg-[#147FFF] p-4" key={index}>
                   <div className="flex h-full flex-col justify-between">
                     <div className="mb-8 flex items-center justify-between gap-2">
                       <p className="text-base font-normal text-white">
@@ -117,10 +125,8 @@ export default function Container() {
                           <TimerIcon className="h-4 w-4 text-white" />
                         </div>
                         <p className="text-xs font-normal text-white">
-                          {format(
-                            new Date(`1970-01-01T${item?.time}`),
-                            "HH:mm",
-                          ) ?? "-"}
+                          {format(new Date(item?.reminder_time), "HH:mm") ??
+                            "-"}
                         </p>
                       </div>
                     </div>
@@ -151,7 +157,7 @@ export default function Container() {
             </div>
             {schedules?.map((item, index) => {
               return (
-                <div className="rounded-2xl bg-[#D1D1D1] p-4" key={index}>
+                <div className="mb-2 rounded-2xl bg-[#D1D1D1] p-4" key={index}>
                   <div className="flex h-full flex-col justify-between">
                     <div className="mb-8 flex items-center justify-between gap-2">
                       <p className="text-base font-normal text-black">

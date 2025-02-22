@@ -22,6 +22,7 @@ export default function Container() {
 
   const handleGetMemos = () => {
     setIsLoadingMemos(true);
+    setMemos([]);
 
     api.get(`/memos/user/${config?.id}`).then((res) => {
       setMemos(res.data);
