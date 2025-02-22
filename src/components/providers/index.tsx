@@ -1,12 +1,12 @@
 "use client";
 
+import { ConfigProvider, TConfig } from "@/store/config";
+import { AppProgressBar } from "next-nprogress-bar";
+import { usePathname } from "next/navigation";
 import React from "react";
 import Nav from "../nav";
-import { usePathname } from "next/navigation";
-import { AppProgressBar } from "next-nprogress-bar";
-import { ConfigProvider } from "@/store/config";
-import { TConfig } from "@/store/config";
 import { Toaster } from "../sonner";
+
 interface ProvidersProps {
   children: React.ReactNode;
 }

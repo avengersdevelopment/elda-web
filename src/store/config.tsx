@@ -6,6 +6,16 @@ import { create } from "zustand";
 
 export interface TConfig {
   id: string;
+  name: string;
+  email: string;
+  age: number;
+  gender: string;
+  medication: string;
+  emergency: string;
+  habits: string;
+  important_notes: string;
+  latitude: number;
+  longitude: number;
 }
 
 interface TCreateStoreParams {

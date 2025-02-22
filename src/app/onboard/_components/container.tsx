@@ -59,9 +59,10 @@ export default function Container() {
 
     if (userRegister) {
       api
-        .post("/api/auth/register", body)
+        .post("/auth/register", body)
         .then(() => {
           localStorage.removeItem("user-register");
+          toast.success("Register successfully");
 
           router.push("/sign-in");
         })
@@ -137,7 +138,7 @@ export default function Container() {
           <div
             className="-mt-2 h-2 w-1/3 rounded-full bg-[#0D6BDC]"
             style={{
-              width: `${(progress / ONBOARD_QUESTIONS?.length) * 100}%`,
+              width: `${(progress / ONBOARD_QUESTIONS?.length - 1) * 100}%`,
             }}
           ></div>
         </div>
@@ -209,7 +210,7 @@ export default function Container() {
                     key={index}
                   >
                     <p className="text-sm font-normal text-[#147FFF] group-hover:text-white">
-                      {item}
+                      {item?.charAt(0).toUpperCase() + item?.slice(1)}
                     </p>
                   </button>
                 );

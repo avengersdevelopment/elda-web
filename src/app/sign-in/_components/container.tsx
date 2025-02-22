@@ -1,18 +1,40 @@
 "use client";
 
+import api from "@/service/api";
 import { EyeIcon, EyeOffIcon } from "lucide-react";
-import { useRouter } from "next/navigation";
-import React, { useState } from "react";
-import Link from "next/link";
 import Image from "next/image";
+import Link from "next/link";
+import { useRouter } from "next/navigation";
+import { useState } from "react";
+import { useForm } from "react-hook-form";
+import { toast } from "sonner";
 
 export default function Container() {
   const router = useRouter();
 
+  const form = useForm();
+
   const [isShowPassword, setIsShowPassword] = useState<boolean>(false);
 
   const handleSubmit = () => {
-    router.push("/");
+    if (!form.watch("email")?.length || !form.watch("password")?.length) {
+      toast.error("Please fill in all fields");
+      return;
+    }
+
+    api
+      .post("/auth/login", {
+        email: form.watch("email"),
+        password: form.watch("password"),
+      })
+      .then((res) => {
+        localStorage.setItem("user", JSON.stringify(res.data.user));
+
+        router.push("/");
+      })
+      .catch(() => {
+        toast.error("Invalid email or password");
+      });
   };
 
   return (
@@ -47,6 +69,7 @@ export default function Container() {
                 <input
                   type="text"
                   className="w-full rounded-md border border-gray-300 px-4 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-[#0D6BDC]"
+                  {...form.register("email")}
                 />
               </div>
               <div className="flex flex-col gap-2">
@@ -54,14 +77,12 @@ export default function Container() {
                   <label className="text-sm font-semibold text-[#1C1B55]">
                     Password
                   </label>
-                  <button className="text-sm font-medium text-[#9797C9]">
-                    Forgot Password?
-                  </button>
                 </div>
                 <div className="relative">
                   <input
                     type={isShowPassword ? "text" : "password"}
                     className="w-full rounded-md border border-gray-300 bg-[#F7F7F7] px-4 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-[#0D6BDC]"
+                    {...form.register("password")}
                   />
                   <div className="absolute right-4 top-1/2 -translate-y-1/2">
                     <button onClick={() => setIsShowPassword(!isShowPassword)}>

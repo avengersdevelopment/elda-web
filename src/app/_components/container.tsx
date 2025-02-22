@@ -1,18 +1,46 @@
+"use client";
+
+import { useConfig } from "@/store/config";
+import { format } from "date-fns";
 import { EllipsisIcon, PlusIcon, TimerIcon } from "lucide-react";
 import Link from "next/link";
+import { useEffect, useState } from "react";
 
 export default function Container() {
+  const { config } = useConfig()();
+
+  const [greeting, setGreeting] = useState<string>("Good Morning,");
+  const [currentDay, setCurrentDay] = useState<string>("");
+  const [currentDate, setCurrentDate] = useState<string>("");
+
+  useEffect(() => {
+    const currentHour = new Date().getHours();
+    if (currentHour < 12) {
+      setGreeting("Good Morning,");
+    } else if (currentHour < 18) {
+      setGreeting("Good Afternoon,");
+    } else {
+      setGreeting("Good Evening,");
+    }
+
+    const today = new Date();
+    setCurrentDay(format(today, "EEEE"));
+    setCurrentDate(format(today, "dd MMM"));
+  }, []);
+
   return (
     <section className="relative min-h-screen w-full bg-[#F2F2F2] pt-12">
       <div className="h-[72px] px-4">
-        <p className="text-sm font-normal text-black">Good Morning,</p>
-        <p className="text-2xl font-semibold text-black">Danique!</p>
+        <p className="text-sm font-normal text-black">{greeting}</p>
+        <p className="text-2xl font-semibold text-black">
+          {config?.name ?? "-"}
+        </p>
       </div>
       <div className="h-[calc(100vh-120px)] w-full rounded-t-3xl bg-white">
         <div className="px-4 pb-16 pt-6">
           <div className="mb-4">
-            <p className="text-sm font-normal text-black">Monday</p>
-            <p className="text-2xl font-semibold text-black">03 Dec</p>
+            <p className="text-sm font-normal text-black">{currentDay}</p>
+            <p className="text-2xl font-semibold text-black">{currentDate}</p>
           </div>
           <div className="mb-8 grid grid-cols-2 items-center gap-2">
             <Link href="/memo/add">

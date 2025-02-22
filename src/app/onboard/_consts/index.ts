@@ -17,7 +17,7 @@ export const ONBOARD_QUESTIONS: IQuestion[] = [
   {
     id: 2,
     question: "What is your gender?",
-    options: ["Male", "Female", "Other"],
+    options: ["male", "female", "other"],
     field: "gender",
     isOption: true,
   },
