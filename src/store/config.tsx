@@ -10,12 +10,17 @@ export interface TConfig {
   email: string;
   age: number;
   gender: string;
-  medication: string;
-  emergency: string;
-  habits: string;
+  medication: Array<{ medicineName: string; schedule: string }>;
+  emergency: {
+    name: string;
+    mobileNo: string;
+  };
+  mobileNo: string;
+  habits: string[];
   important_notes: string;
-  latitude: number;
-  longitude: number;
+  latitude: string;
+  longitude: string;
+  created_at: string;
 }
 
 interface TCreateStoreParams {

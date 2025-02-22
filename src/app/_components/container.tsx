@@ -1,10 +1,21 @@
 "use client";
 
+import api from "@/service/api";
 import { useConfig } from "@/store/config";
 import { format } from "date-fns";
-import { EllipsisIcon, PlusIcon, TimerIcon } from "lucide-react";
+import { EllipsisIcon, TimerIcon } from "lucide-react";
 import Link from "next/link";
 import { useEffect, useState } from "react";
+
+interface ISchedule {
+  id: string;
+  created_at: string;
+  userid: string;
+  time: string;
+  repeating_day: string[] | null;
+  starting_date: string;
+  title: string;
+}
 
 export default function Container() {
   const { config } = useConfig()();
@@ -12,6 +23,16 @@ export default function Container() {
   const [greeting, setGreeting] = useState<string>("Good Morning,");
   const [currentDay, setCurrentDay] = useState<string>("");
   const [currentDate, setCurrentDate] = useState<string>("");
+
+  const [reminders, setReminders] = useState<ISchedule[]>([]);
+  const [schedules, setSchedules] = useState<ISchedule[]>([]);
+
+  const handleGetSchedules = () => {
+    api.get(`/schedules/user/${config?.id}`).then((res) => {
+      setReminders(res.data?.reminders);
+      setSchedules(res.data?.schedules);
+    });
+  };
 
   useEffect(() => {
     const currentHour = new Date().getHours();
@@ -28,6 +49,12 @@ export default function Container() {
     setCurrentDate(format(today, "dd MMM"));
   }, []);
 
+  useEffect(() => {
+    if (config?.id) {
+      handleGetSchedules();
+    }
+  }, [config?.id]);
+
   return (
     <section className="relative min-h-screen w-full bg-[#F2F2F2] pt-12">
       <div className="h-[72px] px-4">
@@ -43,51 +70,67 @@ export default function Container() {
             <p className="text-2xl font-semibold text-black">{currentDate}</p>
           </div>
           <div className="mb-8 grid grid-cols-2 items-center gap-2">
-            <Link href="/memo/add">
+            <Link href="/memo">
               <button className="w-full rounded-full border border-[#02BA62] px-4 py-2.5">
                 <p className="text-sm font-semibold text-[#02BA62]">Add Memo</p>
               </button>
             </Link>
-            <Link href="/memo/add">
-              <button className="w-full rounded-full border border-[#FF4242] px-4 py-2.5">
-                <p className="text-sm font-semibold text-[#FF4242]">
-                  Contact My Family
-                </p>
-              </button>
-            </Link>
+            <a
+              href="tel:+1234567890"
+              className="w-full rounded-full border border-[#FF4242] px-4 py-2.5"
+            >
+              <p className="text-sm font-semibold text-[#FF4242]">
+                Contact My Family
+              </p>
+            </a>
           </div>
           <div className="mb-8">
             <div className="mb-4 flex items-center justify-between gap-2">
               <h4 className="text-base font-semibold text-black">
                 Reminder Overview
               </h4>
-              <Link href="/reminder">
+              <Link href="/guide">
                 <button className="flex items-center gap-2">
-                  <PlusIcon className="h-4 w-4 text-black" />
-                  <p className="text-xs font-normal text-black">Add Task</p>
+                  <p className="text-xs font-normal text-black">See All</p>
                 </button>
               </Link>
             </div>
-            <div className="rounded-2xl bg-[#147FFF] p-4">
-              <div className="flex h-full flex-col justify-between">
-                <div className="mb-8 flex items-center justify-between gap-2">
-                  <p className="text-base font-normal text-white">
-                    Explore the Design Brief
-                  </p>
-                  <button>
-                    <EllipsisIcon className="h-6 w-6 text-white" />
-                  </button>
-                </div>
-                <div className="flex justify-start">
-                  <div className="flex items-center gap-2 rounded-full bg-white/10 p-1 pr-4">
-                    <div className="rounded-full border border-white p-1">
-                      <TimerIcon className="h-4 w-4 text-white" />
+            {reminders?.map((item, index) => {
+              return (
+                <div className="rounded-2xl bg-[#147FFF] p-4" key={index}>
+                  <div className="flex h-full flex-col justify-between">
+                    <div className="mb-8 flex items-center justify-between gap-2">
+                      <p className="text-base font-normal text-white">
+                        {item?.title ?? "-"}
+                      </p>
+                      <button>
+                        <EllipsisIcon className="h-6 w-6 text-white" />
+                      </button>
                     </div>
-                    <p className="text-xs font-normal text-white">15.30</p>
+                    <div className="flex justify-start">
+                      <div className="flex items-center gap-2 rounded-full bg-white/10 p-1 pr-4">
+                        <div className="rounded-full border border-white p-1">
+                          <TimerIcon className="h-4 w-4 text-white" />
+                        </div>
+                        <p className="text-xs font-normal text-white">
+                          {format(
+                            new Date(`1970-01-01T${item?.time}`),
+                            "HH:mm",
+                          ) ?? "-"}
+                        </p>
+                      </div>
+                    </div>
                   </div>
                 </div>
+              );
+            })}
+            {reminders?.length === 0 && (
+              <div className="py-4">
+                <p className="text-center text-sm font-normal text-black">
+                  No Found
+                </p>
               </div>
-            </div>
+            )}
           </div>
           <div className="mb-8">
             <div className="mb-4 flex items-center justify-between gap-2">
@@ -96,27 +139,57 @@ export default function Container() {
               </h4>
             </div>
             <div className="rounded-2xl bg-[#D1D1D1] p-4">
-              <div className="flex h-full flex-col justify-between">
-                <div className="mb-8 flex items-center justify-between gap-2">
-                  <p className="text-base font-normal text-black">
-                    Explore the Design Brief
-                  </p>
-                  <button>
-                    <EllipsisIcon className="h-6 w-6 text-black" />
-                  </button>
-                </div>
-                <div className="flex justify-start gap-2">
-                  <div className="flex items-center gap-2 rounded-full bg-white/25 p-1 pr-4">
-                    <div className="rounded-full border border-black p-1">
-                      <TimerIcon className="h-4 w-4 text-black" />
+              {schedules?.map((item, index) => {
+                return (
+                  <div
+                    className="flex h-full flex-col justify-between"
+                    key={index}
+                  >
+                    <div className="mb-8 flex items-center justify-between gap-2">
+                      <p className="text-base font-normal text-black">
+                        {item?.title ?? "-"}
+                      </p>
+                      <button>
+                        <EllipsisIcon className="h-6 w-6 text-black" />
+                      </button>
                     </div>
-                    <p className="text-xs font-normal text-black">15.30</p>
+                    <div className="mb-2 flex justify-start">
+                      <div className="flex items-center gap-2 rounded-full bg-white/25 p-1 pr-4">
+                        <div className="rounded-full border border-black p-1">
+                          <TimerIcon className="h-4 w-4 text-black" />
+                        </div>
+                        <p className="text-xs font-normal text-black">
+                          {format(
+                            new Date(`1970-01-01T${item?.time}`),
+                            "HH:mm",
+                          ) ?? "-"}
+                        </p>
+                      </div>
+                    </div>
+                    <div className="flex items-center justify-start gap-2">
+                      {item?.repeating_day?.map((item, index) => {
+                        return (
+                          <div
+                            className="flex items-center gap-2 rounded-full bg-white/25 px-4 py-2"
+                            key={index}
+                          >
+                            <p className="text-xs font-normal text-black">
+                              {item ?? "-"}
+                            </p>
+                          </div>
+                        );
+                      })}
+                    </div>
                   </div>
-                  <div className="flex items-center gap-2 rounded-full bg-white/25 px-4 py-1">
-                    <p className="text-xs font-normal text-black">Everyday</p>
-                  </div>
+                );
+              })}
+              {schedules?.length === 0 && (
+                <div className="py-4">
+                  <p className="text-center text-sm font-normal text-black">
+                    No Found
+                  </p>
                 </div>
-              </div>
+              )}
             </div>
           </div>
         </div>

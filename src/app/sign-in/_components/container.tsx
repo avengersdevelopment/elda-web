@@ -1,6 +1,7 @@
 "use client";
 
 import api from "@/service/api";
+import { useConfig } from "@/store/config";
 import { EyeIcon, EyeOffIcon } from "lucide-react";
 import Image from "next/image";
 import Link from "next/link";
@@ -11,8 +12,9 @@ import { toast } from "sonner";
 
 export default function Container() {
   const router = useRouter();
-
   const form = useForm();
+
+  const { setConfig } = useConfig()();
 
   const [isShowPassword, setIsShowPassword] = useState<boolean>(false);
 
@@ -28,7 +30,10 @@ export default function Container() {
         password: form.watch("password"),
       })
       .then((res) => {
+        setConfig(res.data.user);
+
         localStorage.setItem("user", JSON.stringify(res.data.user));
+        toast.success("Login successful");
 
         router.push("/");
       })
