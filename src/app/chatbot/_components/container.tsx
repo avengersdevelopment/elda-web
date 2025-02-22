@@ -14,7 +14,7 @@ import { useSpeechRecognition } from "react-speech-kit";
 interface IMessage {
   id: number;
   message: string;
-  type: "user" | "bot";
+  sender: "user" | "elda";
 }
 
 export default function Container() {
@@ -36,7 +36,7 @@ export default function Container() {
 
   const handleGetMessages = () => {
     api.get(`/chatbot/history/${config?.id}`).then((res) => {
-      setMessages(res.data);
+      setMessages(res.data?.history);
     });
   };
 
@@ -68,15 +68,14 @@ export default function Container() {
   };
 
   useEffect(() => {
-    setMessages((prev) => [
-      {
-        id: 1,
-        message: "Hello, how can I help you today?",
-        type: "bot",
-      },
-      ...prev,
-    ]);
+    handleGetMessages();
   }, []);
+
+  useEffect(() => {
+    if (listRef.current) {
+      listRef.current.scrollTop = listRef.current.scrollHeight;
+    }
+  }, [messages]);
 
   return (
     <section className="h-screen w-full bg-white">
@@ -88,7 +87,7 @@ export default function Container() {
         </Link>
         <h4 className="text-base font-semibold text-black">AI Assistance</h4>
       </div>
-      <div className="px-4 pb-16 pt-4">
+      <div className="px-4 pt-4">
         <div className="mb-4 flex items-center justify-center">
           <div className="h-32 w-32 rounded-full border-2 border-[#0D6BDC] bg-white">
             <video
@@ -101,7 +100,7 @@ export default function Container() {
           </div>
         </div>
         <div
-          className="mt-12 h-[380px] w-full overflow-hidden"
+          className="mt-12 h-[380px] w-full"
           style={{ scrollbarWidth: "none" }}
         >
           <div
@@ -110,8 +109,26 @@ export default function Container() {
             style={{ scrollbarWidth: "none" }}
           >
             <div className="flex flex-col gap-4">
+              <div className="flex justify-start">
+                <div className="flex max-w-[85%] items-start gap-2">
+                  <div>
+                    <Image
+                      src="/assets/onboard/bot.svg"
+                      alt="profile"
+                      width={240}
+                      height={240}
+                      className="h-8 min-h-8 w-8 min-w-8"
+                    />
+                  </div>
+                  <div className="rounded-lg rounded-tl-none bg-[#F7F7F7] p-4">
+                    <p className="text-xs font-medium leading-5 text-black">
+                      Hello, how can I help you today?
+                    </p>
+                  </div>
+                </div>
+              </div>
               {messages?.map((item, index) => {
-                if (item.type === "user") {
+                if (item.sender === "user") {
                   return (
                     <div className="flex justify-end" key={index}>
                       <div className="flex max-w-[85%] items-start gap-2">
