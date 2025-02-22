@@ -61,6 +61,10 @@ export default function CreateModal({ isOpen, onClose }: CreateModalProps) {
       .post(repeatingDays.length > 0 ? "/schedules" : "/reminder", body)
       .then(() => {
         toast.success("Schedule created successfully");
+        form.setValue("title", "");
+        form.setValue("time", "");
+        form.setValue("repeating_day", "");
+        form.setValue("reminder_time", "");
         onClose();
       })
       .catch(() => {

@@ -34,6 +34,7 @@ export default function CreateModal({ isOpen, onClose }: CreateModalProps) {
       .post("/memos", body)
       .then(() => {
         toast.success("Memo created successfully");
+        form.setValue("text", "");
         onClose();
       })
       .catch(() => {
