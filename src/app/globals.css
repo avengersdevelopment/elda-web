@@ -19,3 +19,13 @@ body {
   background: var(--background);
   font-family: Arial, Helvetica, sans-serif;
 }
+
+@layer components {
+  * {
+    @apply scroll-smooth;
+  }
+
+  :disabled {
+    @apply opacity-50;
+  }
+}

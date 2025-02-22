@@ -4,6 +4,7 @@ import "./globals.css";
 import { cn } from "@/utils/classnames";
 import Providers from "@/components/providers";
 import Loading from "@/components/loading";
+
 const fontPlusJakartaSans = Plus_Jakarta_Sans({
   variable: "--font-plus-jakarta-sans",
   subsets: ["latin"],
@@ -27,9 +28,12 @@ export default function RootLayout({
           "bg-white font-sans antialiased",
         )}
       >
-        <Providers>
-          <Loading>{children}</Loading>
-        </Providers>
+        <div className="mx-auto max-w-sm">
+          <Providers>
+            {/* <Loading>{children}</Loading> */}
+            {children}
+          </Providers>
+        </div>
       </body>
     </html>
   );
