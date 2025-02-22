@@ -24,7 +24,10 @@ export default function Container() {
   };
 
   const handleLogout = () => {
-    localStorage.removeItem("user");
+    if (typeof window !== "undefined") {
+      localStorage.removeItem("user");
+    }
+
     toast.success("Logged out successfully");
 
     router.push("/sign-in");

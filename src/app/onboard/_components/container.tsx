@@ -44,7 +44,9 @@ export default function Container() {
 
   const handleRegister = () => {
     const userRegister = JSON.parse(
-      localStorage.getItem("user-register") ?? "{}",
+      typeof window !== "undefined"
+        ? (localStorage.getItem("user-register") ?? "{}")
+        : "{}",
     );
 
     const age = messages.find((item) => item.field === "age");
@@ -74,7 +76,10 @@ export default function Container() {
       api
         .post("/auth/register", body)
         .then(() => {
-          localStorage.removeItem("user-register");
+          if (typeof window !== "undefined") {
+            localStorage.removeItem("user-register");
+          }
+
           toast.success("Register successfully");
 
           router.push("/sign-in");

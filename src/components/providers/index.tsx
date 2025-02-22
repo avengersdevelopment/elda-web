@@ -13,7 +13,10 @@ interface ProvidersProps {
 
 export default function Providers({ children }: ProvidersProps) {
   const pathname = usePathname();
-  const user: TConfig = JSON.parse(localStorage.getItem("user") || "{}");
+  const user: TConfig =
+    typeof window !== "undefined"
+      ? JSON.parse(localStorage.getItem("user") || "{}")
+      : {};
 
   const isHome =
     pathname !== "/sign-in" &&

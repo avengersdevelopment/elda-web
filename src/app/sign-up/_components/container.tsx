@@ -30,7 +30,9 @@ export default function Container() {
       password: form.watch("password"),
     };
 
-    localStorage.setItem("user-register", JSON.stringify(user));
+    if (typeof window !== "undefined") {
+      localStorage.setItem("user-register", JSON.stringify(user));
+    }
 
     router.push("/onboard");
   };

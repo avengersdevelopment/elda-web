@@ -35,7 +35,10 @@ export default function Container() {
       .then((res) => {
         setConfig(res.data.user);
 
-        localStorage.setItem("user", JSON.stringify(res.data.user));
+        if (typeof window !== "undefined") {
+          localStorage.setItem("user", JSON.stringify(res.data.user));
+        }
+
         toast.success("Login successful");
 
         router.push("/");
