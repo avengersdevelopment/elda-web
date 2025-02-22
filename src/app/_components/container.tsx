@@ -24,13 +24,17 @@ export default function Container() {
   const [currentDay, setCurrentDay] = useState<string>("");
   const [currentDate, setCurrentDate] = useState<string>("");
 
+  const [isLoadingSchedules, setIsLoadingSchedules] = useState<boolean>(false);
   const [reminders, setReminders] = useState<ISchedule[]>([]);
   const [schedules, setSchedules] = useState<ISchedule[]>([]);
 
   const handleGetSchedules = () => {
+    setIsLoadingSchedules(true);
+
     api.get(`/schedules/user/${config?.id}`).then((res) => {
       setReminders(res.data?.reminders);
       setSchedules(res.data?.schedules);
+      setIsLoadingSchedules(false);
     });
   };
 
@@ -124,10 +128,17 @@ export default function Container() {
                 </div>
               );
             })}
-            {reminders?.length === 0 && (
+            {reminders?.length === 0 && !isLoadingSchedules && (
               <div className="py-4">
                 <p className="text-center text-sm font-normal text-black">
-                  No Found
+                  Not Found
+                </p>
+              </div>
+            )}
+            {isLoadingSchedules && (
+              <div className="py-4">
+                <p className="text-center text-sm font-normal text-black">
+                  Loading...
                 </p>
               </div>
             )}
@@ -138,13 +149,10 @@ export default function Container() {
                 Upcoming Schedule
               </h4>
             </div>
-            <div className="rounded-2xl bg-[#D1D1D1] p-4">
-              {schedules?.map((item, index) => {
-                return (
-                  <div
-                    className="flex h-full flex-col justify-between"
-                    key={index}
-                  >
+            {schedules?.map((item, index) => {
+              return (
+                <div className="rounded-2xl bg-[#D1D1D1] p-4" key={index}>
+                  <div className="flex h-full flex-col justify-between">
                     <div className="mb-8 flex items-center justify-between gap-2">
                       <p className="text-base font-normal text-black">
                         {item?.title ?? "-"}
@@ -181,16 +189,23 @@ export default function Container() {
                       })}
                     </div>
                   </div>
-                );
-              })}
-              {schedules?.length === 0 && (
-                <div className="py-4">
-                  <p className="text-center text-sm font-normal text-black">
-                    No Found
-                  </p>
                 </div>
-              )}
-            </div>
+              );
+            })}
+            {schedules?.length === 0 && !isLoadingSchedules && (
+              <div className="py-4">
+                <p className="text-center text-sm font-normal text-black">
+                  Not Found
+                </p>
+              </div>
+            )}
+            {isLoadingSchedules && (
+              <div className="py-4">
+                <p className="text-center text-sm font-normal text-black">
+                  Loading...
+                </p>
+              </div>
+            )}
           </div>
         </div>
       </div>

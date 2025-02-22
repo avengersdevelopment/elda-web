@@ -2,8 +2,38 @@
 
 import { PlusIcon } from "lucide-react";
 import Link from "next/link";
+import { useEffect, useState } from "react";
+import api from "@/service/api";
+import { useConfig } from "@/store/config";
+import { format } from "date-fns";
+interface IMemo {
+  id: string;
+  title: string;
+  content: string;
+  created_at: string;
+}
 
 export default function Container() {
+  const { config } = useConfig()();
+
+  const [isLoadingMemos, setIsLoadingMemos] = useState<boolean>(false);
+  const [memos, setMemos] = useState<IMemo[]>([]);
+
+  const handleGetMemos = () => {
+    setIsLoadingMemos(true);
+
+    api.get(`/memos/user/${config?.id}`).then((res) => {
+      setMemos(res.data);
+      setIsLoadingMemos(false);
+    });
+  };
+
+  useEffect(() => {
+    if (config?.id) {
+      handleGetMemos();
+    }
+  }, [config?.id]);
+
   return (
     <section className="relative min-h-screen w-full bg-[#F2F2F2] pt-12">
       <div className="h-[72px] px-4">
@@ -22,16 +52,33 @@ export default function Container() {
             <div className="mb-4 flex items-center justify-between gap-2">
               <h4 className="text-base font-semibold text-black">Today</h4>
             </div>
-            <div className="rounded-2xl bg-white p-4">
-              <div className="flex h-full flex-col justify-between">
-                <p className="mb-2 text-base font-normal text-black">
-                  Explore the Design Brief
-                </p>
-                <p className="text-xs font-normal text-black/25">
-                  {new Date().toLocaleDateString()}
+            {memos?.map((item, index) => {
+              return (
+                <div className="rounded-2xl bg-white p-4" key={index}>
+                  <p className="text-base font-normal text-black">
+                    {item.title}
+                  </p>
+                  <p className="text-xs font-normal text-black/25">
+                    {format(new Date(item.created_at), "dd-MM-yyyy HH:mm")}
+                  </p>
+                </div>
+              );
+            })}
+            {memos?.length === 0 && !isLoadingMemos && (
+              <div className="py-4">
+                <p className="text-center text-sm font-normal text-black">
+                  Not Found
                 </p>
               </div>
-            </div>
+            )}
+
+            {isLoadingMemos && (
+              <div className="py-4">
+                <p className="text-center text-sm font-normal text-black">
+                  Loading...
+                </p>
+              </div>
+            )}
           </div>
         </div>
       </div>
