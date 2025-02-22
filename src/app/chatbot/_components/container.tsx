@@ -3,7 +3,7 @@
 
 import api from "@/service/api";
 import { useConfig } from "@/store/config";
-import { ArrowLeftIcon, SendIcon } from "lucide-react";
+import { ArrowLeftIcon, SendIcon, XIcon } from "lucide-react";
 import Image from "next/image";
 import Link from "next/link";
 import { useEffect, useRef, useState } from "react";
@@ -184,27 +184,24 @@ export default function Container() {
             />
             <button
               disabled={isLoading}
-              onMouseDown={() => {
-                if (form.watch("message")?.length) {
-                  return;
-                }
-
-                listen({ lang: "en-US" });
-              }}
-              onMouseUp={() => {
+              onClick={() => {
                 if (listening) {
                   stop();
                 }
-              }}
-              onClick={() => {
-                if (!form.watch("message")?.length) {
+
+                if (!form.watch("message")?.length && !listening) {
+                  listen({ lang: "en-US" });
                   return;
                 }
 
                 handleSubmit();
               }}
             >
-              {!form.watch("message")?.length ? (
+              {listening ? (
+                <div className="flex h-10 min-h-10 w-10 min-w-10 items-center justify-center rounded-full bg-[#0D6BDC]">
+                  <XIcon className="h-5 min-h-5 w-5 min-w-5 text-white" />
+                </div>
+              ) : !form.watch("message")?.length ? (
                 <Image
                   src="/assets/onboard/btn-voice.svg"
                   alt="mic"
